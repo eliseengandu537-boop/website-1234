@@ -21,4 +21,4 @@ The enquiry form opens the visitor's email application and provides a copy fallb
 
 Company facts and contact details are based on the supplied profile. No ISO certification is claimed; the profile describes ISO 9001 as in progress. The original PDF, which includes affidavit pages, is not included in the deployed assets.
 
-GitHub Pages deployment is defined in `.github/workflows/deploy-pages.yml`. It publishes the static site from `dist/` on pushes to `main` and can also be started manually from the Actions tab.
+GitHub Pages deployment is defined in `.github/workflows/deploy-pages.yml`. Before the first deployment, enable Pages in the repository’s **Settings → Pages** and set the build and deployment source to **GitHub Actions**. The workflow publishes the static site from `dist/` on pushes to `main` and can also be started manually from the Actions tab.
