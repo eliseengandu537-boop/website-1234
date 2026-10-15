@@ -1,0 +1,16 @@
+{
+  "name": "fedpump-website",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "start": "node scripts/serve.mjs",
+    "check": "node --check dist/app.js"
+  },
+  "devDependencies": {
+    "@napi-rs/canvas": "^0.1.80",
+    "pdfjs-dist": "^5.4.0",
+    "playwright-core": "^1.55.0"
+  }
+}
