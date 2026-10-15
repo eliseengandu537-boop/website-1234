@@ -6,11 +6,17 @@
   "scripts": {
     "dev": "node scripts/serve.mjs",
     "start": "node scripts/serve.mjs",
-    "check": "node --check dist/app.js"
+    "check": "node --check dist/app.js && node --check dist/motion.js",
+    "prepare:motion": "node scripts/prepare-motion.mjs"
   },
   "devDependencies": {
+    "@fontsource-variable/dm-sans": "^5.3.0",
+    "@fontsource-variable/manrope": "^5.3.0",
     "@napi-rs/canvas": "^0.1.80",
     "pdfjs-dist": "^5.4.0",
     "playwright-core": "^1.55.0"
+  },
+  "dependencies": {
+    "lenis": "^1.3.26"
   }
 }

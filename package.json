@@ -2,6 +2,8 @@
   "name": "fedpump-render-entry",
   "private": true,
   "scripts": {
+    "dev": "node fedpump/scripts/serve.mjs",
+    "check": "node --check fedpump/dist/app.js && node --check fedpump/dist/motion.js",
     "start": "node fedpump/scripts/serve.mjs"
   }
 }

@@ -1,0 +1,13 @@
+.git
+.github
+.agents
+.codex
+agent.md
+fedpump/.git
+fedpump/.openai
+fedpump/.sites-local
+fedpump/artifacts
+fedpump/node_modules
+fedpump/scripts
+**/.env*
+**/*.tar.gz

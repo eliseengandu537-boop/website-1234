@@ -6,6 +6,18 @@ A responsive company website built from Fedpump's supplied 2026 company profile.
 
 Run `npm run dev` from this folder, then visit http://127.0.0.1:4173.
 
+You can also run `npm run dev` from the parent `website 1234` folder and open http://localhost:4173. Leave the terminal running while previewing; press Ctrl+C to stop it.
+
+## Vercel deployment
+
+Both the repository root and this folder include a `vercel.json`. From the repository root, Vercel publishes `fedpump/dist`; when this folder is selected as the project root, it publishes `dist`. Both configurations use the **Other** framework preset and skip installation and build commands because the site is already static.
+
+To deploy from either folder, run `npx vercel@latest login`, then `npx vercel@latest --prod`. Sign in with the Vercel account that should own the site and select its account/team when prompted.
+
+Alternatively, import the Git repository in Vercel, leave its Root Directory as the repository root, and use the included configuration. If selecting `fedpump` as Root Directory, its own configuration supplies the correct output path. No environment variables are required.
+
+The `.vercelignore` files exclude PDF extraction artifacts, development tools and other local-only material from CLI uploads. The enquiry form still opens an email draft; it does not require a Vercel server function.
+
 ## Checks
 
 Run `npm run check` for JavaScript syntax validation. Development dependencies support PDF asset extraction and browser checks only.
@@ -14,10 +26,10 @@ Run `npm run check` for JavaScript syntax validation. Development dependencies s
 
 - `dist/index.html`: company content and contact details.
 - `dist/styles.css`: visual system, responsive layouts and reduced-motion styles.
-- `dist/app.js`: service selector, mobile navigation, galleries and email enquiry builder.
+- `dist/app.js`: service selector, mobile navigation, galleries, email enquiry builder, scroll parallax, staggered reveals, sticky navigation and page progress.
 - `dist/assets/`: original logo and photographs extracted from the supplied company profile, plus the approved looping hero video.
 
-The enquiry form opens the visitor's email application and provides a copy fallback. It does not send or store submissions on a server. Font files are requested from Google Fonts, with system font fallbacks.
+The enquiry form opens the visitor's email application and provides a copy fallback. It does not send or store submissions on a server. Manrope and DM Sans are bundled locally, with their font licences, so the site makes no external font requests.
 
 Company facts and contact details are based on the supplied profile. No ISO certification is claimed; the profile describes ISO 9001 as in progress. The original PDF, which includes affidavit pages, is not included in the deployed assets.
 

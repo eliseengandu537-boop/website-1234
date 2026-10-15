@@ -110,13 +110,5 @@ document.querySelector('#copy-enquiry').addEventListener('click', async event =>
 });
 enquiryForm.addEventListener('input', () => { document.querySelector('#enquiry-result').hidden = true; });
 
-const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
-if (!motionPreference.matches && 'IntersectionObserver' in window) {
-  document.documentElement.classList.add('js-motion');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
-  }, { threshold: 0.07 });
-  document.querySelectorAll('.reveal').forEach(element => observer.observe(element));
-  motionPreference.addEventListener('change', event => { if (event.matches) { document.documentElement.classList.remove('js-motion'); observer.disconnect(); } });
-}
+// Scroll behaviour lives in motion.js; enquiry and gallery interactions remain independent.
 document.querySelector('#copyright-year').textContent = new Date().getFullYear();

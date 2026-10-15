@@ -9,15 +9,19 @@
   <meta property="og:title" content="Fedpump — Precision that keeps industry moving.">
   <meta property="og:description" content="Pump refurbishment and precision engineering. Built on experience since 1991, in Boksburg, South Africa.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://fedpump-engineering.eliseengandu814.chatgpt.site">
-  <meta property="og:image" content="https://fedpump-engineering.eliseengandu814.chatgpt.site/assets/workshop-hero.webp">
+  <meta property="og:url" content="https://fedpump.vercel.app">
+  <meta property="og:image" content="https://fedpump.vercel.app/assets/workshop-hero.webp">
+  <link rel="canonical" href="https://fedpump.vercel.app/">
   <link rel="icon" href="assets/fedpump-logo.png" type="image/png">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="motion.css">
   <script src="app.js" defer></script>
+  <script type="module" src="motion.js"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"Fedpump","description":"Pump refurbishment, component reconditioning and precision engineering.","foundingDate":"1991","telephone":"+27118943658","email":"sonia.dacunha@yahoo.com","address":{"@type":"PostalAddress","streetAddress":"96 Craig Road, Anderbolt","addressLocality":"Boksburg","postalCode":"1459","addressCountry":"ZA"}}</script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
+  <div class="reading-progress" aria-hidden="true"></div>
   <svg class="svg-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
     <symbol id="arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 5l7 7-7 7"/></symbol>
     <symbol id="arrow-up" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
@@ -55,7 +59,7 @@
     <div class="trust-strip"><div class="container trust-inner"><span>EXPERIENCE YOU CAN BUILD ON</span><div><strong>1991</strong><span>Established</span></div><div><strong>Level 2</strong><span>B-BBEE contributor</span></div><div><strong>End to end</strong><span>Pump refurbishment</span></div><div><strong>Precision</strong><span>In every component</span></div></div></div>
     <section id="about" class="section about-section">
       <div class="container about-grid">
-        <div class="about-visual reveal"><img src="assets/machining.webp" width="1295" height="864" loading="lazy" alt="Close-up of precision machining from the Fedpump company profile"><div class="image-corner"></div><div class="experience-card"><strong>Since<br><span>1991.</span></strong><p>Built on experience.<br>Driven by precision.</p><svg><use href="#arrow-up"/></svg></div><span class="image-index">01 / ENGINEERING WITH PURPOSE</span></div>
+        <div class="about-visual reveal"><div class="about-image-frame media-reveal"><img data-parallax src="assets/machining.webp" width="1295" height="864" loading="lazy" alt="Close-up of precision machining from the Fedpump company profile"></div><div class="image-corner"></div><div class="experience-card"><strong>Since<br><span>1991.</span></strong><p>Built on experience.<br>Driven by precision.</p><svg><use href="#arrow-up"/></svg></div><span class="image-index">01 / ENGINEERING WITH PURPOSE</span></div>
         <div class="about-copy reveal"><div class="eyebrow"><span class="small-line"></span> THE FEDPUMP DIFFERENCE</div><h2>More than a repair.<br>A return to <span class="muted">performance.</span></h2><p>When your pumps stop, your operation feels it. We understand what’s at stake.</p><p>Founded by Ermindo da Cunha in 1991, Fedpump is an engineering machine workshop specialising in pump refurbishment. From an individual component to a complete restoration, our team brings the skill, care and practical knowledge your equipment deserves.</p><div class="value-points"><span><svg><use href="#check"/></svg> Precision workmanship</span><span><svg><use href="#check"/></svg> Collaborative service</span><span><svg><use href="#check"/></svg> Equipment life extension</span><span><svg><use href="#check"/></svg> Dependable delivery</span></div><a class="inline-link" href="#workshop">Meet the workshop behind the work <svg><use href="#arrow-up"/></svg></a></div>
       </div>
     </section>
@@ -86,8 +90,20 @@
     </section>
     <section id="workshop" class="section workshop-section">
       <div class="container"><div class="section-heading reveal"><div><div class="eyebrow"><span class="small-line"></span> INSIDE FEDPUMP</div><h2>The right equipment.<br>The <span class="muted">right hands.</span></h2></div><p>From our workshop in Anderbolt, Boksburg, we bring together industrial machinery and generations of practical know-how.</p></div>
-        <div class="workshop-gallery reveal"><button class="gallery-photo gallery-main" data-gallery="assets/workshop-floor.webp" data-caption="Inside our Boksburg workshop" aria-label="View the Fedpump workshop floor"><img src="assets/workshop-floor.webp" width="480" height="360" alt="Fedpump workshop with orange pump casings and industrial machinery" loading="lazy"><span class="photo-label">OUR WORKSHOP <span>↗</span></span></button><button class="gallery-photo" data-gallery="assets/workshop-lathe.webp" data-caption="Precision machining equipment" aria-label="View precision machining equipment"><img src="assets/workshop-lathe.webp" width="480" height="360" alt="Industrial machining equipment inside Fedpump" loading="lazy"><span class="photo-label">PRECISION IN PRACTICE <span>↗</span></span></button><button class="gallery-photo" data-gallery="assets/team.webp" data-caption="The people behind Fedpump" aria-label="View the Fedpump team"><img src="assets/team.webp" width="800" height="695" alt="The Fedpump workshop team together in blue workwear" loading="lazy"><span class="photo-label">OUR PEOPLE. OUR STRENGTH. <span>↗</span></span></button></div>
-        <div class="workshop-details reveal"><div><h3>Equipped for the detail.</h3><p>Vertical and horizontal boring, milling and radial arm drilling. Working with cast iron, stainless steel, bronze and specialised alloys.</p></div><div><h3>Experience, passed on.</h3><p>Our people are our greatest strength. Hands-on development and skills transfer keep our knowledge growing across generations.</p></div><a class="inline-link" href="https://www.google.com/maps/search/?api=1&query=96+Craig+Road+Anderbolt+Boksburg+1459" target="_blank" rel="noopener noreferrer">Find our workshop <svg><use href="#arrow-up"/></svg></a></div>
+        <div class="workshop-gallery stack-gallery">
+          <article class="workshop-panel" aria-labelledby="workshop-capacity-title">
+            <div class="workshop-panel-copy"><span class="panel-index">01 <span>/ THE WORKSHOP</span></span><h3 id="workshop-capacity-title">Built for<br>the <em>work.</em></h3><p>Vertical and horizontal boring, milling and radial arm drilling. The equipment and practical experience to bring your pumps back to work.</p><div class="capability-tags"><span>BORING</span><span>MILLING</span><span>DRILLING</span></div><a class="inline-link" href="https://www.google.com/maps/search/?api=1&query=96+Craig+Road+Anderbolt+Boksburg+1459" target="_blank" rel="noopener noreferrer">Visit our Boksburg workshop <svg><use href="#arrow-up"/></svg></a></div>
+            <button class="gallery-photo gallery-main" data-gallery="assets/workshop-floor.webp" data-caption="Inside our Boksburg workshop" aria-label="View the Fedpump workshop floor"><img data-parallax src="assets/workshop-floor.webp" width="480" height="360" alt="Fedpump workshop with orange pump casings and industrial machinery" loading="lazy"><span class="photo-label">INSIDE FEDPUMP <span>↗</span></span></button>
+          </article>
+          <article class="workshop-panel panel-reverse" aria-labelledby="workshop-precision-title">
+            <div class="workshop-panel-copy"><span class="panel-index">02 <span>/ THE CRAFT</span></span><h3 id="workshop-precision-title">Precision in<br>every <em>pass.</em></h3><p>Machining, milling and drilling across cast iron, stainless steel, bronze and specialised alloys. Detailed workmanship for old and new pump components.</p><div class="capability-tags"><span>GENERAL MACHINING</span><span>RECONDITIONING</span></div><a class="inline-link" href="#expertise">Explore our expertise <svg><use href="#arrow-up"/></svg></a></div>
+            <button class="gallery-photo" data-gallery="assets/machining.webp" data-caption="Precision machining from the Fedpump company profile" aria-label="View precision machining"><img data-parallax src="assets/machining.webp" width="1295" height="864" alt="Precision machining of a metal component" loading="lazy"><span class="photo-label">PRECISION IN PRACTICE <span>↗</span></span></button>
+          </article>
+          <article class="workshop-panel" aria-labelledby="workshop-people-title">
+            <div class="workshop-panel-copy"><span class="panel-index">03 <span>/ THE PEOPLE</span></span><h3 id="workshop-people-title">Experience,<br><em>passed on.</em></h3><p>Our people are our greatest strength. Hands-on development and skills transfer keep our knowledge growing across generations.</p><div class="capability-tags"><span>SKILL</span><span>CARE</span><span>CONTINUITY</span></div><a class="inline-link" href="#contact">Talk to the Fedpump team <svg><use href="#arrow-up"/></svg></a></div>
+            <button class="gallery-photo" data-gallery="assets/team.webp" data-caption="The people behind Fedpump" aria-label="View the Fedpump team"><img data-parallax src="assets/team.webp" width="800" height="695" alt="The Fedpump workshop team together in blue workwear" loading="lazy"><span class="photo-label">OUR PEOPLE. OUR STRENGTH. <span>↗</span></span></button>
+          </article>
+        </div>
       </div>
     </section>
     <section class="process-section"><div class="container"><div class="process-intro reveal"><div class="eyebrow"><span class="small-line"></span> A CLEAR PATH BACK TO WORK</div><h2>Your pump.<br>Our commitment.</h2><p>Open communication, careful workmanship and quality at every stage.</p></div><ol class="process-steps reveal"><li><span>01</span><div><h3>Understand & assess</h3><p>We discuss your requirements and inspect the pump to identify what needs attention.</p></div></li><li><span>02</span><div><h3>Repair & restore</h3><p>A repair plan guides the reconditioning, machining and replacement of worn components.</p></div></li><li><span>03</span><div><h3>Quality & handover</h3><p>Quality checks, progress updates and agreed timelines keep your project on track.</p></div></li></ol></div></section>

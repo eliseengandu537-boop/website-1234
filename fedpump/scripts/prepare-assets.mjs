@@ -22,4 +22,8 @@ for (const [name, input] of Object.entries(assets)) {
 }
 await fs.copyFile('artifacts/profile/asset-1-2.png', 'dist/assets/fedpump-logo-white.png');
 await fs.copyFile('artifacts/profile/asset-10-2.png', 'dist/assets/fedpump-logo.png');
+await fs.copyFile('node_modules/@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2', 'dist/assets/manrope-latin.woff2');
+await fs.copyFile('node_modules/@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2', 'dist/assets/dm-sans-latin.woff2');
+await fs.copyFile('node_modules/@fontsource-variable/manrope/LICENSE', 'dist/assets/manrope-LICENSE.txt');
+await fs.copyFile('node_modules/@fontsource-variable/dm-sans/LICENSE', 'dist/assets/dm-sans-LICENSE.txt');
 console.log('Prepared 12 original company assets.');

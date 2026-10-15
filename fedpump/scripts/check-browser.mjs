@@ -4,11 +4,13 @@ import assert from 'node:assert/strict';
 
 await fs.mkdir('artifacts/browser', { recursive: true });
 const browser = await chromium.launch({ executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe', headless: true });
+try {
 const errors = [];
 const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'reduce' });
+context.setDefaultTimeout(15000);
 const page = await context.newPage();
 page.on('pageerror', error => errors.push(error.message));
-const response = await page.goto('http://127.0.0.1:4173', { waitUntil: 'networkidle' });
+const response = await page.goto('http://127.0.0.1:4173', { waitUntil: 'domcontentloaded' });
 assert.equal(response.status(), 200);
 await page.evaluate(() => document.fonts.ready);
 async function loadContentImages() {
@@ -56,7 +58,7 @@ assert.equal(await page.locator('#gallery-dialog').isVisible(), true);
 assert.equal(await page.locator('#gallery-image').evaluate(image => image.complete && image.naturalWidth > 0), true);
 await page.keyboard.press('Escape');
 await page.setViewportSize({ width: 390, height: 844 });
-await page.goto('http://127.0.0.1:4173', { waitUntil: 'networkidle' });
+await page.goto('http://127.0.0.1:4173', { waitUntil: 'domcontentloaded' });
 await page.locator('.menu-toggle').click();
 assert.equal(await page.locator('#mobile-nav').isVisible(), true);
 await page.locator('#mobile-nav a[href="#expertise"]').click();
@@ -69,5 +71,28 @@ const images = await page.locator('main img').evaluateAll(images => images.map(i
 assert.equal(images.every(image => image.width > 0 && image.alt.length > 0), true, JSON.stringify(images));
 assert.deepEqual(errors, []);
 const fonts = await page.evaluate(() => ({ manrope: document.fonts.check('500 16px Manrope'), dmSans: document.fonts.check('400 16px "DM Sans"') }));
-console.log(JSON.stringify({ status: 'passed', viewports: [1440, 1024, 768, 390, 320], checks: ['No horizontal overflow', 'Internal anchors', 'All service selectors', 'Enquiry validation and service preselection', 'Email enquiry generation and copy fallback', 'Dialog Escape handling', 'Gallery image loading', 'Mobile navigation', 'All content images loaded', 'No JavaScript errors'], fonts }, null, 2));
-await browser.close();
+const motionContext = await browser.newContext({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'no-preference' });
+motionContext.setDefaultTimeout(15000);
+const motionPage = await motionContext.newPage();
+console.log('Checking animated scroll behaviour…');
+motionPage.on('pageerror', error => errors.push(error.message));
+await motionPage.goto('http://127.0.0.1:4173', { waitUntil: 'domcontentloaded' });
+assert.equal(await motionPage.locator('html').evaluate(element => element.classList.contains('js-motion')), true);
+await motionPage.evaluate(() => window.scrollTo({ top: 300, behavior: 'instant' }));
+await motionPage.waitForFunction(() => document.querySelector('.site-header').classList.contains('is-scrolled'));
+assert.ok(await motionPage.evaluate(() => parseFloat(document.documentElement.style.getPropertyValue('--hero-shift')) > 0));
+assert.ok(await motionPage.evaluate(() => parseFloat(document.documentElement.style.getPropertyValue('--scroll-progress')) > 0));
+assert.equal(await motionPage.locator('.site-header').evaluate(element => getComputedStyle(element).position), 'fixed');
+console.log('Parallax, sticky navigation and reading progress passed.');
+await motionPage.locator('#industries').scrollIntoViewIfNeeded();
+await motionPage.waitForFunction(() => [...document.querySelectorAll('.industry-card')].every(card => card.classList.contains('visible')));
+assert.equal(await motionPage.locator('.industry-card.reveal').count(), 4);
+console.log('Staggered industry card reveals passed.');
+await motionPage.locator('.process-steps').scrollIntoViewIfNeeded();
+await motionPage.waitForFunction(() => parseFloat(document.documentElement.style.getPropertyValue('--process-progress')) > 0);
+await motionPage.emulateMedia({ reducedMotion: 'reduce' });
+await motionPage.waitForFunction(() => !document.documentElement.classList.contains('js-motion'));
+assert.equal(await motionPage.locator('.hero-video, .hero-image').first().evaluate(element => getComputedStyle(element).transform), 'none');
+assert.deepEqual(errors, []);
+console.log(JSON.stringify({ status: 'passed', viewports: [1440, 1024, 768, 390, 320], checks: ['No horizontal overflow', 'Internal anchors', 'All service selectors', 'Enquiry validation and service preselection', 'Email enquiry generation and copy fallback', 'Dialog Escape handling', 'Gallery image loading', 'Mobile navigation', 'All content images loaded', 'No JavaScript errors', 'Hero scroll parallax', 'Fixed glass header', 'Reading progress', 'Staggered card reveals', 'Process scroll line', 'Live reduced-motion preference'], fonts }, null, 2));
+} finally { await browser.close(); }
