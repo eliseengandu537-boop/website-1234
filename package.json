@@ -1,0 +1,7 @@
+{
+  "name": "fedpump-render-entry",
+  "private": true,
+  "scripts": {
+    "start": "node fedpump/scripts/serve.mjs"
+  }
+}

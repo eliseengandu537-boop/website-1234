@@ -17,6 +17,28 @@ document.addEventListener('keydown', event => {
 });
 window.matchMedia('(min-width: 601px)').addEventListener('change', event => { if (event.matches) closeMenu(); });
 
+const heroVideo = document.querySelector('.hero-video');
+if (heroVideo) {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let heroVisible = false;
+  const updateHeroVideo = () => {
+    if (reduceMotion.matches || !heroVisible) { heroVideo.pause(); return; }
+    heroVideo.play().catch(error => console.error('The hero background video could not start.', error));
+  };
+  if ('IntersectionObserver' in window) {
+    const heroVideoObserver = new IntersectionObserver(entries => {
+      heroVisible = entries.some(entry => entry.isIntersecting);
+      updateHeroVideo();
+    }, { threshold: 0.01 });
+    heroVideoObserver.observe(heroVideo);
+  } else {
+    heroVisible = true;
+    updateHeroVideo();
+  }
+  reduceMotion.addEventListener('change', updateHeroVideo);
+  heroVideo.addEventListener('error', () => console.error('The hero background video could not be loaded.', heroVideo.error));
+}
+
 const services = [
   { title: 'Back to its best.', kicker: 'A NEW CHAPTER FOR YOUR PUMP', description: 'Complete restoration of worn or damaged pumps, with repairs and replacement components tailored to your equipment’s condition.', image: 'pump-refurbishment.webp', alt: 'Refurbished orange industrial pump in the Fedpump workshop', name: 'Pump refurbishment' },
   { title: 'Start with the right insight.', kicker: 'UNDERSTAND THE CAUSE', description: 'Detailed inspection of casings, impellers, bearings, seals and shafts helps identify the root cause of poor performance or failure.', image: 'pump-components.webp', alt: 'Machined pump component ready for inspection', name: 'Inspection & assessment' },
