@@ -24,12 +24,12 @@ Run `npm run check` for JavaScript syntax validation. Development dependencies s
 
 ## Editing
 
-- `dist/index.html`: company content and contact details.
+- `dist/index.html`: company content, contact details and the enquiry assistant.
 - `dist/styles.css`: visual system, responsive layouts and reduced-motion styles.
-- `dist/app.js`: service selector, mobile navigation, galleries, email enquiry builder, scroll parallax, staggered reveals, sticky navigation and page progress.
+- `dist/app.js`: service selector, mobile navigation, galleries, guided project enquiry assistant, email enquiry builder, scroll parallax, staggered reveals, sticky navigation and page progress.
 - `dist/assets/`: original logo and photographs extracted from the supplied company profile, plus the approved looping hero video.
 
-The enquiry form opens the visitor's email application and provides a copy fallback. It does not send or store submissions on a server. Manrope and DM Sans are bundled locally, with their font licences, so the site makes no external font requests.
+The enquiry form and guided project assistant open the visitor's email application with a prepared draft; the visitor reviews and sends it. The assistant does not use a live AI model, send messages, or store lead details on a server. Manrope and DM Sans are bundled locally, with their font licences, so the site makes no external font requests.
 
 Company facts and contact details are based on the supplied profile. No ISO certification is claimed; the profile describes ISO 9001 as in progress. The original PDF, which includes affidavit pages, is not included in the deployed assets.
 

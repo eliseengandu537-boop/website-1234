@@ -97,7 +97,7 @@ enquiryForm.addEventListener('submit', event => {
   enquiryText = `Hello Fedpump team,\n\nI would like to discuss ${values.get('service').toLowerCase()}.\n\nName: ${values.get('name')}\nCompany: ${values.get('company') || 'Not provided'}\nEmail: ${values.get('email')}\n\nProject details:\n${values.get('details')}\n\nKind regards,\n${values.get('name')}`;
   document.querySelector('#enquiry-result').hidden = false;
   document.querySelector('#copy-enquiry').textContent = 'Copy enquiry';
-  window.location.href = `mailto:sonia.dacunha@yahoo.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(enquiryText)}`;
+  window.location.href = `mailto:Sonia.dacunha@yahoo.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(enquiryText)}`;
 });
 document.querySelector('#copy-enquiry').addEventListener('click', async event => {
   const button = event.currentTarget;
@@ -112,3 +112,190 @@ enquiryForm.addEventListener('input', () => { document.querySelector('#enquiry-r
 
 // Scroll behaviour lives in motion.js; enquiry and gallery interactions remain independent.
 document.querySelector('#copyright-year').textContent = new Date().getFullYear();
+
+const assistantLauncher = document.querySelector('#lead-assistant-launcher');
+const assistantPanel = document.querySelector('#lead-assistant-panel');
+const assistantClose = assistantPanel.querySelector('.lead-assistant-close');
+const assistantMessages = document.querySelector('#lead-assistant-messages');
+const assistantOptions = document.querySelector('#lead-assistant-options');
+const assistantForm = document.querySelector('#lead-assistant-form');
+const assistantInput = document.querySelector('#lead-assistant-input');
+const assistantLead = {};
+let assistantStep = 'service';
+
+function addAssistantMessage(text, sender = 'assistant') {
+  const message = document.createElement('div');
+  message.className = `lead-assistant-message ${sender}`;
+  message.textContent = text;
+  assistantMessages.append(message);
+  assistantMessages.scrollTop = assistantMessages.scrollHeight;
+}
+
+function setAssistantPrompt(step, prompt, placeholder, inputType = 'text') {
+  assistantStep = step;
+  addAssistantMessage(prompt);
+  assistantInput.type = inputType;
+  assistantInput.placeholder = placeholder;
+  assistantInput.autocomplete = step === 'email' ? 'email' : step === 'name' ? 'name' : 'off';
+  assistantInput.value = '';
+  assistantInput.focus();
+}
+
+function setAssistantOptions(options) {
+  assistantOptions.replaceChildren();
+  options.forEach(({ label, value, action }) => {
+    const button = document.createElement('button');
+    button.className = 'lead-assistant-option';
+    button.type = 'button';
+    button.textContent = label;
+    button.addEventListener('click', () => action ? action() : submitAssistantAnswer(value));
+    assistantOptions.append(button);
+  });
+}
+
+function chooseAssistantService(label, service) {
+  assistantLead.service = service;
+  addAssistantMessage(label, 'user');
+  askForProjectDetails();
+}
+
+function startAssistant() {
+  assistantMessages.replaceChildren();
+  assistantLead.service = '';
+  assistantLead.details = '';
+  assistantLead.name = '';
+  assistantLead.company = '';
+  assistantLead.email = '';
+  assistantLead.phone = '';
+  assistantForm.hidden = false;
+  assistantOptions.replaceChildren();
+  assistantInput.type = 'text';
+  assistantInput.maxLength = 800;
+  assistantInput.placeholder = 'Or briefly describe the job…';
+  assistantInput.autocomplete = 'off';
+  assistantStep = 'service';
+  addAssistantMessage('Hi, I’m the Fedpump project assistant. I can help you prepare an enquiry for our engineering team. What can we help with?');
+  setAssistantOptions([
+    { label: 'Pump refurbishment', value: 'Pump refurbishment', action: () => chooseAssistantService('Pump refurbishment', 'Pump refurbishment') },
+    { label: 'Inspection or assessment', value: 'Inspection & assessment', action: () => chooseAssistantService('Inspection or assessment', 'Inspection & assessment') },
+    { label: 'Components or machining', value: 'Component reconditioning / precision machining', action: () => chooseAssistantService('Components or machining', 'Component reconditioning / precision machining') },
+    { label: 'Something else', value: 'General enquiry', action: () => chooseAssistantService('Something else', 'General enquiry') }
+  ]);
+}
+
+function askForProjectDetails() {
+  setAssistantOptions([]);
+  setAssistantPrompt('details', 'Tell us a little about the pump, component or work you need. Include any model or urgency details that might help.', 'Describe your project…');
+}
+
+function askForName() {
+  setAssistantOptions([]);
+  setAssistantPrompt('name', 'What name should we use when we reply?', 'Your name');
+  assistantInput.maxLength = 100;
+}
+
+function askForCompany() {
+  setAssistantPrompt('company', 'What company are you with? (Optional)', 'Company name (optional)');
+  assistantInput.maxLength = 120;
+  setAssistantOptions([{ label: 'Skip', action: () => submitAssistantAnswer('') }]);
+}
+
+function askForEmail() {
+  setAssistantOptions([]);
+  setAssistantPrompt('email', 'What email address can the Fedpump team reply to?', 'you@company.co.za', 'email');
+  assistantInput.maxLength = 254;
+}
+
+function askForPhone() {
+  setAssistantPrompt('phone', 'Would you like to include a phone number? (Optional)', 'Phone number (optional)', 'tel');
+  assistantInput.maxLength = 40;
+  setAssistantOptions([{ label: 'Skip', action: () => submitAssistantAnswer('') }]);
+}
+
+function finishAssistant() {
+  assistantStep = 'complete';
+  assistantForm.hidden = true;
+  assistantOptions.replaceChildren();
+  const subject = `Fedpump project enquiry: ${assistantLead.service}`;
+  const body = [
+    'Hello Fedpump team,',
+    '',
+    `Service: ${assistantLead.service}`,
+    `Project details: ${assistantLead.details}`,
+    '',
+    `Name: ${assistantLead.name}`,
+    `Company: ${assistantLead.company || 'Not provided'}`,
+    `Email: ${assistantLead.email}`,
+    `Phone: ${assistantLead.phone || 'Not provided'}`
+  ].join('\n');
+  addAssistantMessage(`Thanks, ${assistantLead.name}. Your enquiry is ready. Select below to open it in your email app, review the details and send it to our team.`);
+  const link = document.createElement('a');
+  link.href = `mailto:Sonia.dacunha@yahoo.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  link.innerHTML = 'Open email draft <svg aria-hidden="true"><use href="#arrow-up"></use></svg>';
+  assistantMessages.lastElementChild.append(link);
+  setAssistantOptions([{ label: 'Start another enquiry', action: startAssistant }]);
+}
+
+function submitAssistantAnswer(value) {
+  const answer = value.trim();
+  if (!answer && assistantStep !== 'company' && assistantStep !== 'phone') {
+    assistantInput.setCustomValidity('Please enter a reply, or choose Skip if that option is available.');
+    assistantInput.reportValidity();
+    assistantInput.setCustomValidity('');
+    return;
+  }
+  addAssistantMessage(answer || 'Skipped', 'user');
+  if (assistantStep === 'service') {
+    assistantLead.service = 'General enquiry';
+    assistantLead.details = answer;
+    askForName();
+  } else if (assistantStep === 'details') {
+    assistantLead.details = answer;
+    askForName();
+  } else if (assistantStep === 'name') {
+    assistantLead.name = answer;
+    askForCompany();
+  } else if (assistantStep === 'company') {
+    assistantLead.company = answer;
+    askForEmail();
+  } else if (assistantStep === 'email') {
+    assistantLead.email = answer;
+    askForPhone();
+  } else if (assistantStep === 'phone') {
+    assistantLead.phone = answer;
+    finishAssistant();
+  }
+}
+
+assistantLauncher.addEventListener('click', () => {
+  const opening = assistantPanel.hidden;
+  assistantPanel.hidden = !opening;
+  assistantLauncher.setAttribute('aria-expanded', String(opening));
+  if (opening) {
+    if (!assistantMessages.childElementCount) startAssistant();
+    assistantInput.focus();
+  }
+});
+assistantClose.addEventListener('click', () => {
+  assistantPanel.hidden = true;
+  assistantLauncher.setAttribute('aria-expanded', 'false');
+  assistantLauncher.focus();
+});
+assistantForm.addEventListener('submit', event => {
+  event.preventDefault();
+  if (!assistantForm.reportValidity()) return;
+  if (assistantStep === 'email' && !assistantInput.checkValidity()) {
+    assistantInput.reportValidity();
+    return;
+  }
+  submitAssistantAnswer(assistantInput.value.trim());
+});
+assistantInput.addEventListener('input', () => assistantInput.setCustomValidity(''));
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && !assistantPanel.hidden) {
+    assistantPanel.hidden = true;
+    assistantLauncher.setAttribute('aria-expanded', 'false');
+    assistantLauncher.focus();
+  }
+});
+startAssistant();
